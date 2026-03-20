@@ -2,14 +2,9 @@ from bs4 import BeautifulSoup as bs
 import requests as rq
 import polars as pl
 import pathlib as ph
+import urllib.parse as urlp
 
-#'''
-# 1.First check if folder exists if not create folder
-# 2.Rquest data from page and get list of urls and files
-# 3.Save list somewhere as txt
-# 4.Download from list
-# 5.save sucessfuly downloaded files to txt
-# '''
+
 dl_path = ph.Path('data/raw')
 url= 'https://amazon-reviews-2023.github.io/index.html'
 def data_dictionary():
@@ -39,12 +34,12 @@ def get_links(request):
         links.append(link['href'])
     return links
 
-
+def get_names(links):
+    names = []
+    for link in links:
+        names.append(ph.Path(urlp.urlparse(link).path).name)
+    return names
 
 links = get_links(content_request(url))
-
-print(f'{links}')
-
-
-
-
+names = get_names(links)
+print(f'{names}')
