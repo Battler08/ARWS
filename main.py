@@ -12,7 +12,11 @@ import pathlib as ph
 # '''
 dl_path = ph.Path('data/raw')
 url= 'https://amazon-reviews-2023.github.io/index.html'
-
+def data_dictionary():
+    {
+        'name':'',
+        'link':'',
+    }
 
 def content_request(url):
 
@@ -30,11 +34,16 @@ def content_request(url):
         raise RuntimeError(f"Failed to parse HTML: {e}") from e
 
 def get_links(request):
-    return request.find_all('a',attrs ={'href':True,'download':True})
+    links = []  
+    for link in request.find_all(attrs ={'href':True,'download':True}):
+        links.append(link['href'])
+    return links
+
+
 
 links = get_links(content_request(url))
- 
-print(links)
+
+print(f'{links}')
 
 
 
